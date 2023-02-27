@@ -19,23 +19,25 @@ public class CreateOrderNegativeParameterizedTest {
     private final String address;
     private final String metroStationName;
     private final String phoneNumber;
-
     private final String commentToDelivery;
 
-    public CreateOrderNegativeParameterizedTest(String firstName, String lastName, String address, String metroStationName, String phoneNumber, String commentToDelivery) {
+    private final String button;
+
+    public CreateOrderNegativeParameterizedTest(String firstName, String lastName, String address, String metroStationName, String phoneNumber, String commentToDelivery, String button) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
         this.metroStationName = metroStationName;
         this.phoneNumber = phoneNumber;
         this.commentToDelivery = commentToDelivery;
+        this.button = button;
     }
 
     @Parameterized.Parameters(name = "{index}: {0},{1},{2},{3},{4}")
     public static Object[][] getData() {
         return new Object[][]{
-                {"Test", "Test", "Test", "Белорусская", "Test", ""},
-                {"", "", "", "Минская", "",""}
+                {"Test", "Test", "Test", "Белорусская", "Test", "", ".//button[@class='Button_Button__ra12g']"},
+                {"", "", "", "Минская", "","", ".//button[@class='Button_Button__ra12g Button_Middle__1CSJM']"}
         };
     }
 
@@ -46,9 +48,9 @@ public class CreateOrderNegativeParameterizedTest {
 
     @Test
     public void checkErrorInCasOfInvalidData() {
-        String btnOrderInHeader = ".//button[@class='Button_Button__ra12g']";
+
         new HomePage(driver)
-                .checkErrorInCasOfInvalidData(btnOrderInHeader, new OrderData(firstName, lastName, address, metroStationName, phoneNumber, commentToDelivery));
+                .checkErrorInCasOfInvalidData(button, new OrderData(firstName, lastName, address, metroStationName, phoneNumber, commentToDelivery));
     }
 
     @After

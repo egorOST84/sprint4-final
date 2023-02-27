@@ -20,21 +20,24 @@ public class CreateOrderPositiveParameterizedTest {
     private final String metroStationName;
     private final String phoneNumber;
     private final String commentToDelivery;
+    private final String button;
 
-    public CreateOrderPositiveParameterizedTest(String firstName, String lastName, String address, String metroStationName, String phoneNumber, String commentToDelivery) {
+
+    public CreateOrderPositiveParameterizedTest(String firstName, String lastName, String address, String metroStationName, String phoneNumber, String commentToDelivery, String button) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
         this.metroStationName = metroStationName;
         this.phoneNumber = phoneNumber;
         this.commentToDelivery = commentToDelivery;
+        this.button = button;
     }
 
-    @Parameterized.Parameters(name = "{index}: {0},{1},{2},{3},{4},{5}")
+    @Parameterized.Parameters(name = "{index}: {0},{1},{2},{3},{4},{5}, via btnLocator {6}")
     public static Object[][] getData() {
         return new Object[][]{
-                {"Иван", "Иванов", "Москва", "Белорусская", "+79501000001", "Комментарий для курьера 1"},
-                {"Петр", "Петров", "Санкт-Петербург", "Минская", "+79501000002", "Комментарий для курьера 2"}
+                {"Иван", "Иванов", "Москва", "Белорусская", "+79501000001", "Комментарий для курьера 1", ".//button[@class='Button_Button__ra12g']"},
+                {"Петр", "Петров", "Санкт-Петербург", "Минская", "+79501000002", "Комментарий для курьера 2", ".//button[@class='Button_Button__ra12g Button_Middle__1CSJM']"}
         };
     }
 
@@ -44,17 +47,10 @@ public class CreateOrderPositiveParameterizedTest {
     }
 
     @Test
-    public void checkCreateOrderWithBtnInHeader() {
-        String btnOrderInHeader = ".//button[@class='Button_Button__ra12g']";
-        new HomePage(driver)
-                .createOrderBy(btnOrderInHeader, new OrderData(firstName, lastName, address, metroStationName, phoneNumber, commentToDelivery));
-    }
+    public void checkCreateOrderWithValidData() {
 
-    @Test
-    public void checkCreateOrderWithBtnInFooter() {
-        String btnOrderInFooter = ".//button[@class='Button_Button__ra12g Button_Middle__1CSJM']";
-        new HomePage(driver)
-                .createOrderBy(btnOrderInFooter, new OrderData(firstName, lastName, address, metroStationName, phoneNumber, commentToDelivery));
+        new HomePage(driver).createOrderBy(button, new OrderData(firstName, lastName, address, metroStationName, phoneNumber, commentToDelivery));
+
     }
 
     @After
